@@ -1,0 +1,6 @@
+{
+  "esxi_host": "esxi.local",
+  "remote_datastore": "ds",
+  "network_name": "nw",
+  "guest_build_dir": "."
+}
