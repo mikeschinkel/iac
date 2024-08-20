@@ -1,0 +1,31 @@
+{
+  "distro_name": "debian",
+  "distro_version": "12.6.0",
+  "guest_os_type": "debian9_64Guest",
+  "shutdown_command": "sudo systemctl poweroff",
+  "iso_filename": "debian-12.6.0-arm64-DVD-1.iso",
+  "iso_checksum": "93646d88c7ce54f8a2a846f938cdcf25a9123c36c3788208b27f5fbad7bbd855",
+  "iso_filename2": "debian-12.6.0-arm64-netinst.iso",
+  "iso_checksum2": "856daaf85bcc538ae9c5d011eea4c84864157b3397062586b6f59e938eeb010d",
+  "vnc_port": "5900",
+  "boot_command": [
+    "<esc><wait>",
+    "install <wait>",
+    "<enter><wait>",
+    "<wait5>",
+    "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+    "debian-installer=en_US.UTF-8 <wait>",
+    "auto <wait>",
+    "locale=en_US.UTF-8 <wait>",
+    "kbd-chooser/method=us <wait>",
+    "netcfg/get_hostname=tart <wait>",
+    "netcfg/get_domain=local <wait>",
+    "fb=false <wait>",
+    "debconf/frontend=noninteractive <wait>",
+    "console-setup/ask_detect=false <wait>",
+    "console-keymaps-at/keymap=us <wait>",
+    "keyboard-configuration/xkb-keymap=us <wait>",
+    "<enter><wait>"
+  ]
+}
+

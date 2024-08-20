@@ -1,0 +1,21 @@
+# shellcheck disable=SC2034
+SYSTEMD_DIR="/etc/systemd/system"
+# shellcheck disable=SC2034
+SCRIPT="update-hosts.sh"
+# shellcheck disable=SC2034
+NAME="hosts-updater"
+# shellcheck disable=SC2034
+HOSTS_FILE="/etc/hosts"
+# shellcheck disable=SC2034
+TMP_HOSTS="/tmp/etc_hosts"
+# shellcheck disable=SC2034
+ERROR_LOG_DIR="/var/log/hosts-updater"
+# shellcheck disable=SC2034
+SERVICE="${NAME}.service"
+# shellcheck disable=SC2034
+VM_NAMES=("k1" "k2" "k3")
+# shellcheck disable=SC2034
+CURRENT_VM="$(cat /etc/hostname)"
+# shellcheck disable=SC2034
+ERROR_LOG="${ERROR_LOG_DIR}/error.log"
+

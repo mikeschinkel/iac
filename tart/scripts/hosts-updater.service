@@ -1,0 +1,12 @@
+[Unit]
+Description=Monitors and updates /etc/hosts with mDNS .local entries of k1, k2, and k3
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/update-hosts.sh
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
