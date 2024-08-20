@@ -18,6 +18,14 @@
       "type": "string",
       "description": "The command to shutdown the guest OS."
     },
+    "iso_filename": {
+      "type": "string",
+      "description": "The base filename and extension for the distro's ISO file."
+    },
+    "iso_checksum": {
+      "type": "string",
+      "description": "The checksum for the distro's ISO file."
+    },
     "vnc_port": {
       "type": "string",
       "description": "The VNC port."
