@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eox pipefail
+set -eo pipefail
 
 BIN_DIR="/usr/local/bin"
 source "${BIN_DIR}/hosts-const.sh"
@@ -50,11 +50,13 @@ function renew_dhcp_lease {
 
 function has_host {
 	local host="$1"
+	#echo "Checking ${HOSTS_FILE} to see if it contains [${host}]"
 	grep -E "\b${host}" "${HOSTS_FILE}" >/dev/null
 }
 
 function update_hosts {
 	for vm_name in "${VM_NAMES[@]}"; do
+		#echo "Checking VM '${vm_name}'"
 		if [ "${vm_name}" == "${CURRENT_VM}" ]; then
 			continue
 		fi
@@ -81,20 +83,19 @@ function update_hosts {
 		done
 
 		if has_host "${entry}"; then
-			# The hosts file already has what we need
-			return 0
+			#echo "The hosts file already has this entry [${entry}]."
+			continue
 		fi
 
 		if has_host "${domain}"; then
-			# The hosts has a different IP address
-			# Remove existing entries for the vm_name and blank lines
+			echo "The hosts files has a different IP address for ${domain}. Remove existing entries and blank lines."
 			awk "!/\b${domain}/ && NF" "${HOSTS_FILE}" | tee "${TMP_HOSTS}"
-			# Replace /etc/hosts with updated file
+			echo "Replace /etc/hosts with updated file."
 			mv "${TMP_HOSTS}" "${HOSTS_FILE}"
 		fi
 
 		if ! has_host "${domain}"; then
-			# Add the new entry
+			echo "Add new entry in ${entry} /etc/hosts."
 			printf "%s\n" "${entry}" | tee -a "${HOSTS_FILE}"
 		fi
 
