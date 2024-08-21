@@ -53,6 +53,9 @@ function configure_master {
 			"${proxy}"
 		index=$(( index+1 ))
 	done
+
+	kubectl delete node debian || true
+
 	echo "K3s config file updated"
 }
 
