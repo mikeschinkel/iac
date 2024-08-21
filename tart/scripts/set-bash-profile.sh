@@ -26,6 +26,8 @@ function set_bash_profile {
     echo 'alias kc="kubectl create "'
     echo 'alias ka="kubectl apply"'
     echo 'alias kd="kubectl delete"'
+    echo 'alias sc="sudo systemctl "'
+    echo 'alias jc="sudo journalctl "'
   	echo
   	echo cat /etc/hosts
   	echo

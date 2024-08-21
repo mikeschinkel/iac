@@ -18,7 +18,7 @@ function install_samba {
 
   if [ -z "${password}" ] ; then
     echo "Password:"
-    read -s password
+    read -r -s password
 	fi
 
   apt-get update \

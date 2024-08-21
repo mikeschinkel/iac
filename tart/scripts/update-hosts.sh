@@ -54,6 +54,11 @@ function has_host {
 	grep -E "\b${host}" "${HOSTS_FILE}" >/dev/null
 }
 
+function current_hosts_ip {
+	local domain="$1"
+	awk "/(\t| )${domain}/" "${HOSTS_FILE}"
+}
+
 function update_hosts {
 	for vm_name in "${VM_NAMES[@]}"; do
 		#echo "Checking VM '${vm_name}'"
@@ -75,6 +80,7 @@ function update_hosts {
 					continue
 				fi
 			}
+			echo "Hosts entry is: ${entry}"
 			if [ -n "${entry}" ] ; then
 				break
 			fi
@@ -87,9 +93,20 @@ function update_hosts {
 			continue
 		fi
 
+		echo "Entry '${entry}' not found."
+		echo "/etc/hosts:"
+		cat /etc/hosts
+		echo
+
 		if has_host "${domain}"; then
-			echo "The hosts files has a different IP address for ${domain}. Remove existing entries and blank lines."
-			awk "!/\b${domain}/ && NF" "${HOSTS_FILE}" | tee "${TMP_HOSTS}"
+			echo "Domain: ${domain}"
+			printf \
+				"The hosts files has a different IP address for domain: [%s <> %s] for %s" "${entry}. " \
+				"$(current_hosts_ip "${domain}")" \
+				"${domain}"
+
+			echo "Remove existing entries and blank lines."
+			awk "!/(\t| )${domain}/ && NF" "${HOSTS_FILE}" | tee "${TMP_HOSTS}"
 			echo "Replace /etc/hosts with updated file."
 			mv "${TMP_HOSTS}" "${HOSTS_FILE}"
 		fi
