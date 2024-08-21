@@ -18,6 +18,7 @@ function log_error {
 }
 
 function install_agent {
+	chmod +x "${K3S_INSTALL}"
 	K3S_TOKEN="${K3S_TOKEN}" \
 	K3S_URL="${K3S_URL}" \
 		sh "${K3S_INSTALL}"
@@ -37,7 +38,7 @@ function update_agent_service {
 
 function main {
 	echo "Downloading K3s install script from ${K3S_DOWNLOAD} to ${K3S_INSTALL}"
-	if ! curl -sfL "${K3S_DOWNLOAD}" > "${K3S_INSTALL}" ; then
+	if ! curl -sfL "${K3S_DOWNLOAD}" 1> "${K3S_INSTALL}" ; then
 		log_error "Failed to download ${K3S_DOWNLOAD} to ${K3S_INSTALL}"
 		return 1
 	fi
