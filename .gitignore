@@ -1,3 +1,5 @@
 /iso
 /iso/**
 **/*.log
+/tart/config
+/tart/config/**
