@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 usage() {
 	local message="$1"
@@ -10,16 +11,20 @@ usage() {
 		echo
 		case "${command}" in
 			start)
-				echo "  Usage: ./cluster.sh start [--no-graphics]"
+				echo "  Usage: ./cluster.sh start [--with-console]"
+				;;
+			restart)
+				echo "  Usage: ./cluster.sh restart [--with-console]"
 				;;
 			*)
 				echo "  Usage: ./cluster.sh <command>"
 				echo
 				echo "      <command> may be one of:"
 				echo "      	- build"
-				echo "      	- start [--no-graphics]"
+				echo "      	- start [--with-console]"
 				echo "      	- list"
 				echo "      	- stop"
+				echo "      	- restart [--with-console]"
 				echo "      	- delete"
 				;;
 		esac
@@ -67,11 +72,27 @@ build_cluster() {
 }
 
 run_all_vms() {
-	# args="$@"
-#	run_vm k1 "$@"
-	run_vm k1 "$@" \
-		&& run_vm k2 "$@" \
-		&& run_vm k3 "$@"
+	local args=()
+	local with_console=0
+
+	for arg in "$@" ; do
+		if [ "${arg}" == "--with-console" ]; then
+			with_console=1
+			continue
+		fi
+		args+=("${k}")
+	done
+	if [ $with_console -eq 0 ]; then
+		args+=("--no-graphics")
+	fi
+
+#	# shellcheck disable=SC2086
+#	run_vm k1 "${args[@]}" \
+
+	# shellcheck disable=SC2086
+	run_vm k1 "${args[@]}" \
+		&& run_vm k2 "${args[@]}" \
+		&& run_vm k3 "${args[@]}"
 }
 
 run_vm() {
@@ -80,7 +101,6 @@ run_vm() {
 	# args="$@"
 	echo "Starting VM '${vm_name}'..."
 	tart run "${vm_name}" \
-		--no-graphics \
 		--net-bridged=en0 \
 		"$@" \
 		&
@@ -152,6 +172,11 @@ delete_cluster() {
 	list_cluster
 }
 
+function restart_cluster {
+	stop_cluster || echo
+	start_cluster "$@"
+}
+
 function main {
 	local command="$1"
 	shift
@@ -168,6 +193,9 @@ function main {
 			;;
 		stop)
 			stop_cluster
+			;;
+		restart)
+			restart_cluster "$@"
 			;;
 		delete)
 			delete_cluster
