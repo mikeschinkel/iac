@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -eo pipefail
 
 K3S_DOMAIN="$1"
 K3S_DOWNLOAD="https://get.k3s.io"
