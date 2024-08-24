@@ -268,7 +268,7 @@ run_all_vms() {
 	fi
 
 	for vm in "${VMS[@]}"; do
-		echo "Starting VM '${vm_name}'..."
+		echo "Starting VM '${vm}'..."
 		if ! _run_vm "${vm}" "${args[@]}"; then
 			log_error "Failed to start VM ${vm}"
 			result=1
