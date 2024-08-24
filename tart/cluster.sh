@@ -285,6 +285,7 @@ _run_vm() {
 	# args="$@"
 	tart run "${vm_name}" \
 		--net-bridged=en0 \
+		--dir=projects:~/Projects \
 		--no-graphics \
 		"$@" \
 		&
